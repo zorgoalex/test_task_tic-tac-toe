@@ -17,15 +17,15 @@ export function GameBoard({ board, onCellClick, disabled, winLine, isBlurred }: 
     <motion.div
       className={`
         relative
-        grid grid-cols-3
         w-full max-w-[320px] mx-auto
-        rounded-lg overflow-hidden
+        rounded-2xl overflow-hidden
         transition-all duration-500
         ${isBlurred ? 'blur-sm opacity-50' : ''}
       `}
       style={{
-        backgroundColor: 'rgba(51, 51, 51, 0.12)',
-        gap: '1px',
+        background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(168, 85, 247, 0.3))',
+        padding: '3px',
+        boxShadow: '0 8px 32px rgba(255, 107, 157, 0.2), 0 4px 16px rgba(168, 85, 247, 0.15)',
       }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -33,21 +33,31 @@ export function GameBoard({ board, onCellClick, disabled, winLine, isBlurred }: 
       role="grid"
       aria-label="Игровое поле 3 на 3"
     >
-      {board.map((value, index) => (
-        <div
-          key={index}
-          style={{ backgroundColor: '#f9f9f7' }}
-          role="gridcell"
-        >
-          <Cell
-            value={value}
-            index={index}
-            onClick={() => onCellClick(index)}
-            disabled={disabled}
-            isWinning={winningCells.includes(index)}
-          />
-        </div>
-      ))}
+      <div
+        className="grid grid-cols-3 rounded-xl overflow-hidden"
+        style={{
+          gap: '2px',
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        }}
+      >
+        {board.map((value, index) => (
+          <div
+            key={index}
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+            }}
+            role="gridcell"
+          >
+            <Cell
+              value={value}
+              index={index}
+              onClick={() => onCellClick(index)}
+              disabled={disabled}
+              isWinning={winningCells.includes(index)}
+            />
+          </div>
+        ))}
+      </div>
     </motion.div>
   )
 }

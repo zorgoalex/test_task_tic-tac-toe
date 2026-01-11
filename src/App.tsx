@@ -13,7 +13,7 @@ function App() {
   const [promoCode, setPromoCode] = useState<string | null>(null)
   const [lastClickTime, setLastClickTime] = useState(0)
 
-  // Обработка хода ИИ
+  // Обработка хода компьютера
   useEffect(() => {
     if (!state.isPlayerTurn && state.status === 'playing' && !isProcessing) {
       processAIMove()
@@ -23,13 +23,11 @@ function App() {
   // Обработка завершения игры
   useEffect(() => {
     if (state.status !== 'playing') {
-      // Небольшая задержка перед показом модального окна
       const timer = setTimeout(() => {
         if (state.status === 'win') {
           const code = generatePromoCode()
           setPromoCode(code)
           recordWin()
-          // Отправляем промокод в Telegram (mock в dev)
           sendPromoCode(code)
         } else if (state.status === 'loss') {
           recordLoss()
@@ -46,7 +44,7 @@ function App() {
   // Обработка клика по ячейке с debounce
   const handleCellClick = useCallback((index: number) => {
     const now = Date.now()
-    if (now - lastClickTime < 300) return // Debounce 300ms
+    if (now - lastClickTime < 300) return
 
     setLastClickTime(now)
     makeMove(index)
@@ -62,37 +60,38 @@ function App() {
   // Текст статуса
   const getStatusText = () => {
     if (state.status !== 'playing') return ''
-    if (isProcessing) return 'Компьютер думает...'
-    return 'Ваш ход'
+    if (isProcessing) return 'Думаю... 🤔'
+    return 'Твой ход! ✨'
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center p-4"
-      style={{ backgroundColor: '#f9f9f7' }}
-    >
-      <div className="w-full max-w-md">
+    <div className="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 relative">
+      {/* Декоративные элементы */}
+      <div className="absolute top-10 left-10 text-6xl opacity-20 animate-bounce" style={{ animationDuration: '3s' }}>💖</div>
+      <div className="absolute bottom-20 right-10 text-5xl opacity-20 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>✨</div>
+      <div className="absolute top-1/4 right-20 text-4xl opacity-15 animate-pulse">💫</div>
+
+      <div className="w-full max-w-md relative z-10">
         <Header subtitle={getStatusText()} />
 
-        <GameBoard
-          board={state.board}
-          onCellClick={handleCellClick}
-          disabled={!state.isPlayerTurn || state.status !== 'playing' || isProcessing}
-          winLine={state.winLine}
-          isBlurred={isModalOpen}
-        />
+        <div className="glass rounded-3xl p-6 sm:p-8">
+          <GameBoard
+            board={state.board}
+            onCellClick={handleCellClick}
+            disabled={!state.isPlayerTurn || state.status !== 'playing' || isProcessing}
+            winLine={state.winLine}
+            isBlurred={isModalOpen}
+          />
 
-        {/* Индикатор хода */}
-        <div className="mt-6 text-center">
-          <div
-            className="flex items-center justify-center gap-4 text-sm"
-            style={{ color: 'rgba(51, 51, 51, 0.6)' }}
-          >
-            <span className="flex items-center gap-1">
-              <span className="text-lg" style={{ color: '#7a8a6b' }}>✦</span> Вы
+          {/* Легенда */}
+          <div className="mt-6 flex items-center justify-center gap-6 text-sm">
+            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(255, 107, 157, 0.15)' }}>
+              <span className="text-xl">💗</span>
+              <span style={{ color: '#e85a8a', fontWeight: 600 }}>Ты</span>
             </span>
-            <span className="flex items-center gap-1">
-              <span className="text-lg" style={{ color: '#a88888' }}>○</span> Компьютер
+            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(168, 85, 247, 0.15)' }}>
+              <span className="text-xl">🤖</span>
+              <span style={{ color: '#7c3aed', fontWeight: 600 }}>Бот</span>
             </span>
           </div>
         </div>

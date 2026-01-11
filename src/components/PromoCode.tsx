@@ -1,15 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Copy, Check } from 'lucide-react'
+import { Copy, Check, Gift } from 'lucide-react'
 
 interface PromoCodeProps {
   code: string
-}
-
-const COLORS = {
-  charcoal: '#333333',
-  sage: '#9caa8b',
-  sageDark: '#7a8a6b',
 }
 
 export function PromoCode({ code }: PromoCodeProps) {
@@ -41,31 +35,40 @@ export function PromoCode({ code }: PromoCodeProps) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <p className="text-sm" style={{ color: 'rgba(51, 51, 51, 0.7)' }}>
-        Ваш промокод:
-      </p>
+      <div className="flex items-center gap-2 text-sm" style={{ color: '#64748b' }}>
+        <Gift className="w-4 h-4" style={{ color: '#ff6b9d' }} />
+        <span>Твой промокод:</span>
+      </div>
 
       <motion.div
-        className="flex items-center gap-3 rounded-lg px-5 py-3"
-        style={{ backgroundColor: 'rgba(51, 51, 51, 0.05)' }}
+        className="flex items-center gap-3 rounded-2xl px-5 py-3 relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(168, 85, 247, 0.1))',
+          border: '2px dashed rgba(255, 107, 157, 0.4)',
+        }}
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
         <span
-          className="font-mono text-2xl sm:text-3xl font-medium tracking-wider"
-          style={{ color: COLORS.charcoal }}
+          className="font-mono text-2xl sm:text-3xl font-bold tracking-wider gradient-text"
         >
           {code}
         </span>
 
         <motion.button
           onClick={handleCopy}
-          className="p-2 rounded-md transition-colors"
+          className="p-2.5 rounded-xl transition-all"
           style={{
-            backgroundColor: copied ? 'rgba(156, 170, 139, 0.2)' : 'rgba(51, 51, 51, 0.1)',
-            color: copied ? COLORS.sageDark : 'rgba(51, 51, 51, 0.7)',
+            background: copied
+              ? 'linear-gradient(135deg, #22c55e, #16a34a)'
+              : 'linear-gradient(135deg, #ff6b9d, #a855f7)',
+            color: 'white',
+            boxShadow: copied
+              ? '0 4px 15px rgba(34, 197, 94, 0.3)'
+              : '0 4px 15px rgba(255, 107, 157, 0.3)',
           }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           aria-label={copied ? 'Скопировано' : 'Копировать промокод'}
         >
@@ -79,13 +82,13 @@ export function PromoCode({ code }: PromoCodeProps) {
 
       {copied && (
         <motion.p
-          className="text-sm"
-          style={{ color: COLORS.sageDark }}
+          className="text-sm font-medium"
+          style={{ color: '#22c55e' }}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
         >
-          Скопировано!
+          Скопировано! ✅
         </motion.p>
       )}
     </div>

@@ -10,10 +10,10 @@ interface CellProps {
 }
 
 const COLORS = {
-  player: '#7a8a6b',    // sage-dark
-  computer: '#a88888',  // rose-dark
-  winBg: 'rgba(156, 170, 139, 0.15)', // sage с прозрачностью
-  hoverBg: 'rgba(51, 51, 51, 0.05)',
+  player: '#ff6b9d',      // vibrant pink
+  computer: '#a855f7',    // purple
+  winBg: 'rgba(255, 107, 157, 0.2)',
+  hoverBg: 'rgba(255, 107, 157, 0.1)',
 }
 
 export function Cell({ value, index, onClick, disabled, isWinning }: CellProps) {
@@ -51,22 +51,24 @@ export function Cell({ value, index, onClick, disabled, isWinning }: CellProps) 
         <motion.span
           initial={{ scale: 0, rotate: -180 }}
           animate={{
-            scale: isWinning ? [1, 1.1, 1] : 1,
+            scale: isWinning ? [1, 1.2, 1] : 1,
             rotate: 0,
           }}
           transition={{
             type: 'spring',
-            stiffness: 260,
-            damping: 20,
+            stiffness: 300,
+            damping: 15,
             scale: isWinning
-              ? { repeat: Infinity, duration: 1.5 }
+              ? { repeat: Infinity, duration: 1 }
               : { duration: 0.3 },
           }}
           style={{
-            filter: isWinning ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' : 'none',
+            filter: isWinning
+              ? 'drop-shadow(0 0 12px rgba(255, 107, 157, 0.6))'
+              : 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
           }}
         >
-          {value === 'X' ? '✦' : '○'}
+          {value === 'X' ? '💗' : '💜'}
         </motion.span>
       )}
     </motion.button>
