@@ -101,7 +101,7 @@ function App() {
         isOpen={isModalOpen}
         status={state.status}
         promoCode={promoCode}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handlePlayAgain}
         onPlayAgain={handlePlayAgain}
       />
     </div>
