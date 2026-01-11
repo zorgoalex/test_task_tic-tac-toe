@@ -11,7 +11,7 @@ interface GameBoardProps {
 }
 
 export function GameBoard({ board, onCellClick, disabled, winLine, isBlurred }: GameBoardProps) {
-  const winningCells = winLine?.cells ?? []
+  const winningCells: number[] = winLine?.cells ?? []
 
   return (
     <motion.div

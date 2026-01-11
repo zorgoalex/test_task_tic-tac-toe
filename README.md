@@ -66,6 +66,37 @@ src/
 
 ## API интеграция
 
-Проект поддерживает отправку промокодов через внешний API. В режиме разработки используется mock-реализация.
+Проект поддерживает отправку промокодов через Telegram Bot API.
 
-Для production необходимо создать API endpoint `/api/telegram` и настроить переменные окружения.
+- **Development:** mock-реализация (логирование в консоль)
+- **Production:** реальная отправка через `/api/telegram`
+
+## Деплой на Vercel
+
+### 1. Подключение репозитория
+
+```bash
+# Установить Vercel CLI (опционально)
+npm i -g vercel
+
+# Деплой
+vercel
+```
+
+Или подключить репозиторий через [Vercel Dashboard](https://vercel.com/dashboard).
+
+### 2. Настройка переменных окружения
+
+В Vercel Dashboard → Project → Settings → Environment Variables добавить:
+
+| Переменная | Описание |
+|------------|----------|
+| `TELEGRAM_BOT_TOKEN` | Токен бота от [@BotFather](https://t.me/BotFather) |
+| `TELEGRAM_CHAT_ID` | ID чата/канала для отправки промокодов |
+
+### 3. Получение Telegram credentials
+
+1. Создать бота через [@BotFather](https://t.me/BotFather) → `/newbot`
+2. Скопировать токен бота
+3. Добавить бота в нужный чат/канал
+4. Получить Chat ID через [@userinfobot](https://t.me/userinfobot) или API
