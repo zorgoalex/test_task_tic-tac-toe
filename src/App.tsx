@@ -5,7 +5,7 @@ import { Modal } from './components/Modal'
 import { useGame } from './hooks/useGame'
 import { generatePromoCode } from './utils/codeGenerator'
 import { recordWin, recordLoss, recordDraw } from './utils/storage'
-import { sendPromoCode } from './services/telegramService'
+import { sendPromoCode, sendMessage } from './services/telegramService'
 
 function App() {
   const { state, isProcessing, makeMove, processAIMove, resetGame } = useGame()
@@ -31,6 +31,7 @@ function App() {
           sendPromoCode(code)
         } else if (state.status === 'loss') {
           recordLoss()
+          sendMessage('Проигрыш')
         } else if (state.status === 'draw') {
           recordDraw()
         }

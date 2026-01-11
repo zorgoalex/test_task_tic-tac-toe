@@ -33,15 +33,17 @@ export default async function handler(
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  // Получаем промокод из тела запроса
-  const { code } = req.body
+  // Получаем данные из тела запроса
+  const { code, message: customMessage } = req.body
 
-  if (!code || typeof code !== 'string') {
-    return res.status(400).json({ error: 'Invalid promo code' })
+  if (!code && !customMessage) {
+    return res.status(400).json({ error: 'Missing code or message' })
   }
 
   // Формируем сообщение
-  const message = `🎉 Новый промокод выигран!\n\nКод: <code>${code}</code>\n\nДата: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}`
+  const message = code
+    ? `Победа! Промокод выдан: ${code}`
+    : customMessage
 
   try {
     // Отправляем в Telegram
@@ -53,7 +55,6 @@ export default async function handler(
       body: JSON.stringify({
         chat_id: chatId,
         text: message,
-        parse_mode: 'HTML',
       }),
     })
 
